@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-wrapper">
+    <div class="glass-card main-card">
+        <div class="header-section">
+            <h1>Workspace</h1>
+            <p>Upload your PDFs and specify the target to extract matching pages instantly.</p>
+        </div>
+
+        <form id="upload-form" enctype="multipart/form-data">
+            <!-- Target Input -->
+            <div class="search-section">
+                <div class="input-group search-group">
+                    <input type="text" name="search_name" id="search_name" required placeholder=" ">
+                    <label for="search_name">Target Name / Keyword to Extract</label>
+                </div>
+            </div>
+
+            <!-- Drag and Drop Dropzone -->
+            <div class="dropzone-area" id="dropzone">
+                <div class="dropzone-content">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h3>Drag & Drop PDFs here</h3>
+                    <p>or click to browse from your device</p>
+                    <input type="file" name="pdfs" id="file-input" multiple accept=".pdf" class="hidden-input">
+                </div>
+            </div>
+            <div id="file-list" class="file-list"></div>
+
+            <button type="submit" id="submit-btn" class="btn-primary process-btn" disabled>
+                <span class="btn-text">Extract & Merge Pages</span>
+                <div class="loader hidden" id="loader"></div>
+            </button>
+        </form>
+
+        <!-- Results Section -->
+        <div id="results-section" class="results-section hidden">
+            <h2 class="title-success">🎉 Processing Complete!</h2>
+            <p id="result-message" class="result-message"></p>
+            
+            <div class="action-buttons">
+                <a id="download-link" href="#" class="btn-primary download-btn" download>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Merged PDF
+                </a>
+                <button type="button" id="preview-btn" class="btn-secondary">Preview</button>
+                <button type="button" id="reset-btn" class="btn-text-only">Process More Files</button>
+            </div>
+        </div>
+
+        <!-- Preview Modal -->
+        <div id="preview-modal" class="modal hidden">
+            <div class="modal-content glass-card">
+                <div class="modal-header">
+                    <h3>Document Preview</h3>
+                    <button id="close-modal" class="close-btn">&times;</button>
+                </div>
+                <iframe id="pdf-preview-frame" class="pdf-frame" src=""></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
