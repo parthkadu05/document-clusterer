@@ -1,11 +1,9 @@
-Team Name :- MartySupreme  
-
 Team Members :-  
 1) Atharva Bhoite 
 2) Parth Kadu 
  
 Project Title 
-Hierarchical AI-Based Document Clustering System 
+Document Clustering System 
 
 1. Introduction 
 In today’s digital environment, the main challenge for a single user is not just storing documents, but finding the right document quickly when needed. Users often save PDFs, notes, reports, research papers, screenshots, and text files in different folders, which creates confusion over time. 
