@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DendroDoc - Smart PDF Processing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v=4.0">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-leaf">🌿</span> INDIA
+        </div>
+        <div class="nav-links">
+            <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
+            {% if current_user.is_authenticated %}
+                <span class="user-greeting">Welcome, {{ current_user.username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn-primary">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const root = document.documentElement;
+        
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            root.setAttribute('data-theme', savedTheme);
+            themeBtn.innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+        } else {
+            root.setAttribute('data-theme', 'dark'); // default dark
+        }
+
+        themeBtn.addEventListener('click', () => {
+            const current = root.getAttribute('data-theme');
+            const target = current === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', target);
+            localStorage.setItem('theme', target);
+            themeBtn.innerText = target === 'dark' ? '☀️' : '🌙';
+        });
+
+        // Global function for Toast
+        window.showToast = function(msg, type='info') {
+            let bg = "linear-gradient(to right, #3b82f6, #2563eb)";
+            if (type === 'success') bg = "linear-gradient(to right, #10b981, #059669)";
+            if (type === 'error') bg = "linear-gradient(to right, #ef4444, #dc2626)";
+            
+            Toastify({
+                text: msg,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: { background: bg, borderRadius: "8px", fontFamily: "Outfit" }
+            }).showToast();
+        };
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
