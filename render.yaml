@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: dendrodoc
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dendrodoc-db
+          property: connectionString
+
+databases:
+  - name: dendrodoc-db
+    databaseName: dendrodoc
+    user: dendrodoc
+    plan: free
